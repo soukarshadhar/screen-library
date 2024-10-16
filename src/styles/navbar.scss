@@ -1,0 +1,79 @@
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
+  height: 3.3rem;
+  color: #fdfdfd;
+
+  &.active {
+    background-color: black;
+    box-shadow: 0px 2px 10px #2b2a2a;
+  }
+
+  .logo {
+    height: 1.4rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 2rem;
+  }
+
+  .section-one {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    a {
+      text-decoration: none;
+      color: #fdfdfd;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+
+    .active {
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 0.5rem;
+    }
+  }
+
+  .section-two {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    column-gap: 1rem;
+
+    .profile-icon {
+      height: 1.5rem;
+      cursor: pointer;
+    }
+
+    .search {
+      margin-top: 0.3rem;
+      color: #fdfdfd;
+    }
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    width: 8rem;
+    background-color: #212121;
+    color: #fdfdfd;
+    right: 2rem;
+    top: 2.7rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 10px #212121;
+
+    div {
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.dialog-container {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+
+  dialog {
+    background-color: #212121;
+    color: white;
+    width: 28rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    margin-top: 12vh;
+    box-shadow: 0 0 20px #212121;
+    border-radius: 1rem;
+
+    h1 {
+      color: rgb(248, 249, 250);
+    }
+
+    .close-icon {
+      position: absolute;
+      right: 1.2rem;
+      top: 1rem;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+  }
+}

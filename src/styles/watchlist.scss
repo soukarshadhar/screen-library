@@ -1,0 +1,17 @@
+.tab-group {
+  display: flex;
+  column-gap: 1.5rem;
+  margin: 4.5rem 2rem 2rem 2rem;
+}
+
+.tab {
+  margin: 0;
+  color: white;
+  display: inline;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &.active {
+    opacity: 1;
+  }
+}
