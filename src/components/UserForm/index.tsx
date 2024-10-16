@@ -10,7 +10,7 @@ import {
 import { auth, db } from "../../utils/firebase";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { SIGN_IN_LABEL, SIGN_UP_LABEL } from "../../utils/constants";
 import { toggleDialog, selectDialogIsOpen } from "../../store/dialogSlice";
 import {
@@ -165,10 +165,15 @@ const UserForm = () => {
           />
         </form>
         {!isSignUpForm && (
-          <div onClick={handleOnToggleForm}>{SIGN_UP_LABEL}</div>
+          <div
+            className="form-secondary-action"
+            onClick={handleOnToggleForm}
+          >{`New User? ${SIGN_UP_LABEL}`}</div>
         )}
         {isSignUpForm && (
-          <div onClick={handleOnToggleForm}>Back to Sign In</div>
+          <div className="form-secondary-action" onClick={handleOnToggleForm}>
+            <FontAwesomeIcon icon={faArrowLeft} /> Back to Sign In
+          </div>
         )}
       </dialog>
     </div>

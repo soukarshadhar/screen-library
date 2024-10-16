@@ -48,7 +48,7 @@ const TVShows = () => {
 
   return (
     <>
-      <Carousel list={topRatedTVShowsList} />
+      <Carousel list={topRatedTVShowsList} assetType={AssetType.TVShows} />
       <Filter />
       <Listing
         list={tvShowsList}
