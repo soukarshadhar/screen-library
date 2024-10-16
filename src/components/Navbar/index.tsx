@@ -4,7 +4,11 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
-  // faMagnifyingGlass,
+  faBars,
+  faStar,
+  faFilm,
+  faRightToBracket,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
 import { toggleDialog } from "../../store/dialogSlice";
@@ -21,6 +25,7 @@ const Navbar = () => {
   const { id } = useParams();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [navActive, setNavActive] = useState(false);
+  const [showCollapsedMenu, setShowCollapsedMenu] = useState(false);
   const user = useSelector(selectUser);
 
   useEffect(() => {
@@ -56,61 +61,109 @@ const Navbar = () => {
     setShowProfileDropdown(false);
   };
 
+  const handleOnHamburgerClick = () => {
+    setShowCollapsedMenu(!showCollapsedMenu);
+  };
+
   return (
-    <nav className={id || navActive ? "active" : ""}>
-      <img className="logo" src={Logo} alt="logo" />
-      <div className="section-one">
-        <Link
-          className={
-            pathname === `/${AssetType.Movies}` ||
-            pathname === `/${AssetType.Movies}/${id}`
-              ? "active"
-              : ""
-          }
-          to={`/${AssetType.Movies}?${getSearchParamPopularityDesc()}`}
-        >
-          Movies
-        </Link>
-        <Link
-          className={
-            pathname === `/${AssetType.TVShows}` ||
-            pathname === `/${AssetType.TVShows}/${id}`
-              ? "active"
-              : ""
-          }
-          to={`/${AssetType.TVShows}?${getSearchParamPopularityDesc()}`}
-        >
-          TV Shows
-        </Link>
-        {user && (
+    <nav
+      className={`navbar${
+        id || navActive || showCollapsedMenu ? " active" : ""
+      }`}
+    >
+      <div className="navbar-menu">
+        <img className="navbar-logo" src={Logo} alt="logo" />
+        <FontAwesomeIcon
+          className="navbar-hamburger"
+          onClick={handleOnHamburgerClick}
+          icon={faBars}
+        />
+        <div className="navbar-links">
           <Link
-            className={pathname === "/watchlist" ? "active" : ""}
-            to="/watchlist"
+            className={
+              pathname === `/${AssetType.Movies}` ||
+              pathname === `/${AssetType.Movies}/${id}`
+                ? "active"
+                : ""
+            }
+            to={`/${AssetType.Movies}?${getSearchParamPopularityDesc()}`}
           >
-            Watchlist
+            Movies
           </Link>
-        )}
-      </div>
-      <div className="section-two">
-        {/* <Link to="/search" className="search">
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </Link> */}
+          <Link
+            className={
+              pathname === `/${AssetType.TVShows}` ||
+              pathname === `/${AssetType.TVShows}/${id}`
+                ? "active"
+                : ""
+            }
+            to={`/${AssetType.TVShows}?${getSearchParamPopularityDesc()}`}
+          >
+            TV Shows
+          </Link>
+          {user && (
+            <Link
+              className={pathname === "/watchlist" ? "active" : ""}
+              to="/watchlist"
+            >
+              Watchlist
+            </Link>
+          )}
+        </div>
         <FontAwesomeIcon
           onClick={handleOnProfileClick}
           className="profile-icon"
           icon={faUserCircle}
         />
+        {showProfileDropdown && (
+          <div className="profile-dropdown">
+            {user && (
+              <span>
+                Welcome <b>{user.displayName}</b>
+              </span>
+            )}
+            {user && <div onClick={handleOnSignOutClick}>Sign Out</div>}
+            {!user && <div onClick={handleOnSignInClick}>Sign In</div>}
+          </div>
+        )}
       </div>
-      {showProfileDropdown && (
-        <div className="profile-dropdown">
+      {showCollapsedMenu && (
+        <>
           {user && (
-            <span>
-              Welcome <b>{user.displayName}</b>
-            </span>
+            <div className="menu-item">
+              <FontAwesomeIcon icon={faUserCircle} />
+              <span>
+                Welcome <b>{user.displayName}</b>
+              </span>
+            </div>
           )}
-          {user && <div onClick={handleOnSignOutClick}>Logout</div>}
-          {!user && <div onClick={handleOnSignInClick}>Sign In</div>}
-        </div>
+          <div className="menu-item">
+            <FontAwesomeIcon icon={faFilm} />
+            Movies
+          </div>
+          <div className="menu-item">
+            <FontAwesomeIcon icon={faFilm} />
+            TV Shows
+          </div>
+          {user && (
+            <div className="menu-item">
+              <FontAwesomeIcon icon={faStar} />
+              Watchlist
+            </div>
+          )}
+          {!user && (
+            <div className="menu-item" onClick={handleOnSignInClick}>
+              <FontAwesomeIcon icon={faRightToBracket} />
+              Sign In
+            </div>
+          )}
+          {user && (
+            <div className="menu-item" onClick={handleOnSignOutClick}>
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              Sign Out
+            </div>
+          )}
+        </>
       )}
     </nav>
   );

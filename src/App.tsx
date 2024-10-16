@@ -48,7 +48,7 @@ const App = () => {
           element: <Movies />,
         },
         {
-          path: "tvshows",
+          path: "/tvshows",
           element: <TVShows />,
         },
         {

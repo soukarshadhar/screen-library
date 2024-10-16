@@ -1,10 +1,9 @@
-nav {
+.navbar {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 3;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
-  height: 3.3rem;
   color: #fdfdfd;
 
   &.active {
@@ -12,68 +11,97 @@ nav {
     box-shadow: 0px 2px 10px #2b2a2a;
   }
 
-  .logo {
-    height: 1.4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 2rem;
-  }
-
-  .section-one {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    top: 50%;
+  .navbar-menu {
+    height: 3.3rem;
+    position: relative;
     display: flex;
+    padding: 0 2rem 0 1.7rem;
     align-items: center;
-    column-gap: 0.5rem;
+    justify-content: space-between;
 
-    a {
-      text-decoration: none;
-      color: #fdfdfd;
-      font-size: 1rem;
-      padding: 0.5rem;
+    .navbar-logo {
+      height: 1.4rem;
     }
 
-    .active {
-      background-color: rgba(255, 255, 255, 0.4);
-      border-radius: 0.5rem;
+    .navbar-hamburger {
+      cursor: pointer;
     }
-  }
 
-  .section-two {
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    column-gap: 1rem;
+    .navbar-links {
+      display: none;
+    }
 
     .profile-icon {
-      height: 1.5rem;
-      cursor: pointer;
+      display: none;
     }
 
-    .search {
-      margin-top: 0.3rem;
-      color: #fdfdfd;
+    .profile-dropdown {
+      display: none;
     }
   }
 
-  .profile-dropdown {
-    position: absolute;
-    width: 8rem;
-    background-color: #212121;
-    color: #fdfdfd;
-    right: 2rem;
-    top: 2.7rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0px 0px 10px #212121;
+  .menu-item {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    background-color: black;
+    margin: 0 2rem 1rem 2rem;
+    cursor: pointer;
+  }
+}
 
-    div {
-      cursor: pointer;
+@media only screen and (min-width: 700px) {
+  .navbar {
+    .navbar-menu {
+      column-gap: 1.7rem;
+
+      .navbar-hamburger {
+        display: none;
+      }
+
+      .navbar-links {
+        display: flex;
+        flex-grow: 1;
+
+        a {
+          text-decoration: none;
+          color: #fdfdfd;
+          font-size: 1rem;
+          padding: 0.5rem;
+
+          &.active {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 0.5rem;
+          }
+        }
+      }
+
+      .profile-icon {
+        display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .profile-dropdown {
+        display: block;
+        position: absolute;
+        width: 10rem;
+        background-color: #212121;
+        color: #fdfdfd;
+        right: 2rem;
+        top: 2.7rem;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0px 0px 10px #212121;
+
+        div {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .menu-item {
+      display: none;
     }
   }
 }

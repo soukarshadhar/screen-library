@@ -18,7 +18,7 @@ const useTopRatedList = (assetType: AssetType) => {
         return {
           id: `${i.id}`,
           backdropPath: i.backdrop_path,
-          title: i.title,
+          title: i.title || i.name,
           overview: i.overview,
         };
       });
