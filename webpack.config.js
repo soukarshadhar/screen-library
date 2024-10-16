@@ -6,8 +6,8 @@ module.exports = (env) => {
   const config = {
     entry: join(process.cwd(), "src", "index.tsx"),
     output: {
-      filename: "index.bundle.js",
-      path: join(process.cwd(), "dist"),
+      filename: "bundle.js",
+      path: join(process.cwd(), "build"),
       clean: true,
     },
     resolve: {

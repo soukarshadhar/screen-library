@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
-  faMagnifyingGlass,
+  // faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "firebase/auth";
 import { toggleDialog } from "../../store/dialogSlice";

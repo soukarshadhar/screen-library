@@ -9,11 +9,11 @@ import { getFirestore } from "firebase/firestore";
 // Initialize Firebase
 const app = initializeApp({
   apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: "moviesandtvshows-76ff1.firebaseapp.com",
-  projectId: "moviesandtvshows-76ff1",
-  storageBucket: "moviesandtvshows-76ff1.appspot.com",
-  messagingSenderId: "586889504761",
-  appId: "1:586889504761:web:dce7827bc8e9eb6463ff28",
+  authDomain: "screen-library.firebaseapp.com",
+  projectId: "screen-library",
+  storageBucket: "screen-library.appspot.com",
+  messagingSenderId: "831956568212",
+  appId: "1:831956568212:web:319f8017c6eba65a840c81",
 });
 export const auth = getAuth(app);
 
