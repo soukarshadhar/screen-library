@@ -1,6 +1,12 @@
 .shimmer {
-  width: 12rem;
+  width: 10rem;
   background-color: #3f3b3b;
   border-radius: 1rem;
   aspect-ratio: 92 / 138;
+}
+
+@media only screen and (min-width: 700px) {
+  .shimmer {
+    width: 11rem;
+  }
 }

@@ -1,6 +1,6 @@
 .card {
   border-radius: 1rem;
-  width: 12rem;
+  width: 10rem;
   position: relative;
   box-shadow: 0 0 15px #434343;
   aspect-ratio: 92 / 138;
@@ -50,5 +50,11 @@
     padding: 0.5rem;
     text-align: center;
     width: 100%;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .card {
+    width: 11rem;
   }
 }
