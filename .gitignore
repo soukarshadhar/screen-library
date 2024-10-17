@@ -2,3 +2,7 @@
 /.env
 /build
 /.firebase
+/.firebaserc
+/firebase.json
+# Local Netlify folder
+.netlify
