@@ -1,11 +1,5 @@
-import React, { useEffect } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import React from "react";
+import { Outlet, Navigate, HashRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Movies from "./pages/Movies";
 import AssetDetails from "./pages/AssetDetails";
@@ -15,19 +9,11 @@ import UserForm from "./components/UserForm";
 import useAuth from "./hooks/useAuth";
 import { Provider } from "react-redux";
 import store from "./store";
+import { AssetType } from "./utils/constants";
 import { getSearchParamPopularityDesc } from "./utils/utils";
 
 const Layout = () => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
   useAuth();
-
-  useEffect(() => {
-    if (pathname === "/") {
-      navigate(`/movies?${getSearchParamPopularityDesc()}`, { replace: true });
-    }
-  }, []);
-
   return (
     <>
       <Navbar />
@@ -38,34 +24,33 @@ const Layout = () => {
 };
 
 const App = () => {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        {
-          path: "/movies",
-          element: <Movies />,
-        },
-        {
-          path: "/tvshows",
-          element: <TVShows />,
-        },
-        {
-          path: "/:assetType/:id",
-          element: <AssetDetails />,
-        },
-        {
-          path: "/watchlist",
-          element: <WatchList />,
-        },
-      ],
-    },
-  ]);
-
   return (
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <HashRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to={`/${AssetType.Movies}?${getSearchParamPopularityDesc()}`}
+                />
+              }
+            />
+            <Route path={`/${AssetType.Movies}`} element={<Movies />} />
+            <Route
+              path={`/${AssetType.Movies}/:id`}
+              element={<AssetDetails assetType={AssetType.Movies} />}
+            />
+            <Route path={`/${AssetType.TVShows}`} element={<TVShows />} />
+            <Route
+              path={`/${AssetType.TVShows}/:id`}
+              element={<AssetDetails assetType={AssetType.TVShows} />}
+            />
+            <Route path="/watchlist" element={<WatchList />} />
+          </Route>
+        </Routes>
+      </HashRouter>
     </Provider>
   );
 };

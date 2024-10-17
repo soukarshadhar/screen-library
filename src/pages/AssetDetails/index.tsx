@@ -18,8 +18,8 @@ import ProfileCard from "../../components/ProfileCard";
 import VideoPlayer from "../../components/VideoPlayer";
 import "../../styles/details.scss";
 
-const AssetDetails = () => {
-  const { assetType, id } = useParams();
+const AssetDetails = ({ assetType }: { assetType: AssetType }) => {
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const assetInfo = useSelector(selectAssetInfo);
   const assetIsLoading = useSelector(selectAssetDetailsIsLoading);
