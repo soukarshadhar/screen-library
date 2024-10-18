@@ -125,7 +125,7 @@ const AssetDetails = ({ assetType }: { assetType: AssetType }) => {
           </div>
         </div>
       </div>
-      <h2 className="subheading">Casts</h2>
+      {assetDetailsCast.length > 0 && <h2 className="subheading">Casts</h2>}
       <div className="asset-casts">
         {assetDetailsCast.map((cast) => {
           return (
