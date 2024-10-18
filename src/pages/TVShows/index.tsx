@@ -29,6 +29,9 @@ const TVShows = () => {
   const topRatedTVShowsList = useSelector(
     selectors[AssetType.TopRatedTVShows].selectList
   );
+  const topRatedTVShowsListLoading = useSelector(
+    selectors[AssetType.TopRatedTVShows].selectLoading
+  );
   const watchListTVShowIds = useSelector(selectWatchListTVShowIds);
 
   const { fetchMore } = useListing(
@@ -48,7 +51,11 @@ const TVShows = () => {
 
   return (
     <>
-      <Carousel list={topRatedTVShowsList} assetType={AssetType.TVShows} />
+      <Carousel
+        list={topRatedTVShowsList}
+        assetType={AssetType.TVShows}
+        loading={topRatedTVShowsListLoading}
+      />
       <Filter />
       <Listing
         list={tvShowsList}

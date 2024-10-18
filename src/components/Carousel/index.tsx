@@ -13,9 +13,10 @@ import "../../styles/carousel.scss";
 type CarouselProps = {
   list: any[];
   assetType: AssetType;
+  loading: boolean;
 };
 
-const Carousel = ({ list, assetType }: CarouselProps) => {
+const Carousel = ({ list, assetType, loading }: CarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const resolvedIndex = resolveToArrayIndex(activeIndex, list.length);
 
@@ -27,7 +28,7 @@ const Carousel = ({ list, assetType }: CarouselProps) => {
     setActiveIndex(activeIndex + 1);
   };
 
-  if (list.length === 0) return null;
+  if (loading || list.length === 0) return <div className="carousel" />;
 
   return (
     <div

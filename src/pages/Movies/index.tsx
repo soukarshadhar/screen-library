@@ -26,6 +26,10 @@ const Movies = () => {
   const topRatedMoviesList = useSelector(
     selectors[AssetType.TopRatedMovies].selectList
   );
+  const topRatedMoviesListLoading = useSelector(
+    selectors[AssetType.TopRatedMovies].selectLoading
+  );
+
   const loggedInUser = useSelector(selectUser);
   const watchListMovieIds = useSelector(selectWatchListMovieIds);
 
@@ -46,7 +50,11 @@ const Movies = () => {
 
   return (
     <>
-      <Carousel list={topRatedMoviesList} assetType={AssetType.Movies} />
+      <Carousel
+        list={topRatedMoviesList}
+        assetType={AssetType.Movies}
+        loading={topRatedMoviesListLoading}
+      />
       <Filter />
       <Listing
         list={moviesList}

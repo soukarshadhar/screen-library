@@ -63,7 +63,7 @@ const Navbar = () => {
 
   const handleOnNavbarClick = (ev: React.MouseEvent<HTMLElement>) => {
     if ((ev.target as any).id === "navOpen") {
-      setShowCollapsedMenu(true);
+      setShowCollapsedMenu(!showCollapsedMenu);
     }
 
     if ((ev.target as any).id === "navClose") {
@@ -124,13 +124,17 @@ const Navbar = () => {
         />
         {showProfileDropdown && (
           <div className="profile-dropdown">
+            {user && <div className="username">{user.displayName}</div>}
             {user && (
-              <span>
-                Welcome <b>{user.displayName}</b>
-              </span>
+              <div className="sign-out" onClick={handleOnSignOutClick}>
+                Sign Out <FontAwesomeIcon icon={faRightFromBracket} />
+              </div>
             )}
-            {user && <div onClick={handleOnSignOutClick}>Sign Out</div>}
-            {!user && <div onClick={handleOnSignInClick}>Sign In</div>}
+            {!user && (
+              <div className="sign-in" onClick={handleOnSignInClick}>
+                Sign In <FontAwesomeIcon icon={faRightToBracket} />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -139,9 +143,7 @@ const Navbar = () => {
           {user && (
             <div className="menu-item">
               <FontAwesomeIcon icon={faUserCircle} />
-              <span>
-                Welcome <b>{user.displayName}</b>
-              </span>
+              <b>{user.displayName}</b>
             </div>
           )}
           <Link

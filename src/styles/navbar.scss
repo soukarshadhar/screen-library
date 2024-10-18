@@ -12,7 +12,7 @@
   }
 
   .navbar-menu {
-    height: 3.3rem;
+    height: 3.5rem;
     position: relative;
     display: flex;
     padding: 0 2rem 0 1.7rem;
@@ -96,7 +96,23 @@
         border-radius: 0.5rem;
         box-shadow: 0px 0px 10px #212121;
 
-        div {
+        .username {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .sign-in {
+          display: flex;
+          justify-content: space-between;
+          cursor: pointer;
+        }
+
+        .sign-out {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 0.7rem;
+          padding-top: 0.7rem;
+          border-top: 1px solid white;
           cursor: pointer;
         }
       }
