@@ -78,6 +78,13 @@ const AssetDetails = ({ assetType }: { assetType: AssetType }) => {
               >
                 Watch
               </button>
+              <a
+                className="watch-link"
+                target="__blank"
+                href={`https://www.youtube.com/watch?v=${assetDetailsVideo.key}`}
+              >
+                Watch
+              </a>
             </div>
           )}
           <div>

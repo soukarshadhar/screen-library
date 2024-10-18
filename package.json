@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --env NODE_ENV=development",
-    "build": "webpack --env NODE_ENV=production"
+    "build": "webpack --env NODE_ENV=production",
+    "deploy": "netlify deploy --prod",
+    "deploy:firebase": "firebase deploy"
   },
   "keywords": [],
   "author": "",
