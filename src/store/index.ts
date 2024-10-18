@@ -28,6 +28,7 @@ import formReducer from "./formSlice";
 import userReducer from "./userSlice";
 import watchListReducer from "./watchListSlice";
 import assetDetailsReducer from "./assetDetailsSlice";
+import appLoaderReducer from "./appLoaderSlice";
 import { AssetType } from "../utils/constants";
 
 const store = configureStore({
@@ -41,6 +42,7 @@ const store = configureStore({
     user: userReducer,
     watchList: watchListReducer,
     assetDetails: assetDetailsReducer,
+    canShowAppLoader: appLoaderReducer,
   },
 });
 

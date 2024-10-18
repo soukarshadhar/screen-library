@@ -61,12 +61,19 @@ const Navbar = () => {
     setShowProfileDropdown(false);
   };
 
-  const handleOnHamburgerClick = () => {
-    setShowCollapsedMenu(!showCollapsedMenu);
+  const handleOnNavbarClick = (ev: React.MouseEvent<HTMLElement>) => {
+    if ((ev.target as any).id === "navOpen") {
+      setShowCollapsedMenu(true);
+    }
+
+    if ((ev.target as any).id === "navClose") {
+      setShowCollapsedMenu(false);
+    }
   };
 
   return (
     <nav
+      onClick={handleOnNavbarClick}
       className={`navbar${
         id || navActive || showCollapsedMenu ? " active" : ""
       }`}
@@ -74,8 +81,8 @@ const Navbar = () => {
       <div className="navbar-menu">
         <img className="navbar-logo" src={Logo} alt="logo" />
         <FontAwesomeIcon
+          id="navOpen"
           className="navbar-hamburger"
-          onClick={handleOnHamburgerClick}
           icon={faBars}
         />
         <div className="navbar-links">
@@ -137,28 +144,44 @@ const Navbar = () => {
               </span>
             </div>
           )}
-          <div className="menu-item">
+          <Link
+            id="navClose"
+            className="menu-item"
+            to={`/${AssetType.Movies}?${getSearchParamPopularityDesc()}`}
+          >
             <FontAwesomeIcon icon={faFilm} />
             Movies
-          </div>
-          <div className="menu-item">
+          </Link>
+          <Link
+            id="navClose"
+            className="menu-item"
+            to={`/${AssetType.TVShows}?${getSearchParamPopularityDesc()}`}
+          >
             <FontAwesomeIcon icon={faFilm} />
             TV Shows
-          </div>
+          </Link>
           {user && (
-            <div className="menu-item">
+            <Link id="navClose" className="menu-item" to="/watchlist">
               <FontAwesomeIcon icon={faStar} />
               Watchlist
-            </div>
+            </Link>
           )}
           {!user && (
-            <div className="menu-item" onClick={handleOnSignInClick}>
+            <div
+              id="navClose"
+              className="menu-item"
+              onClick={handleOnSignInClick}
+            >
               <FontAwesomeIcon icon={faRightToBracket} />
               Sign In
             </div>
           )}
           {user && (
-            <div className="menu-item" onClick={handleOnSignOutClick}>
+            <div
+              id="navClose"
+              className="menu-item"
+              onClick={handleOnSignOutClick}
+            >
               <FontAwesomeIcon icon={faRightFromBracket} />
               Sign Out
             </div>

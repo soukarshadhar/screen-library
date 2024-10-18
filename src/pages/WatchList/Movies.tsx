@@ -5,7 +5,7 @@ import {
   selectWatchListIsListLoading,
   selectWatchListMovieIds,
   updateWatchListMovieIds,
-  fetchMovies,
+  fetchWatchListMovies,
 } from "../../store/watchListSlice";
 import { AppDispatch } from "../../store";
 import { AssetType } from "../../utils/constants";
@@ -19,13 +19,17 @@ const Movies = () => {
 
   useEffect(() => {
     if (watchListMovies.length !== watchListMovieIds.length) {
-      dispatch(fetchMovies());
+      dispatch(fetchWatchListMovies());
     }
-  }, [watchListMovies, watchListMovieIds]);
+  }, []);
 
   const handleOnItemClick = (ev: any) => {
-    if (ev.target.dataset.watchid) {
-      dispatch(updateWatchListMovieIds(ev.target.dataset.watchid));
+    if (ev.target.dataset.id) {
+      const arg = {
+        movieId: ev.target.dataset.id,
+        canUpdateWatchListMovies: true,
+      };
+      dispatch(updateWatchListMovieIds(arg));
     }
   };
 
@@ -36,7 +40,8 @@ const Movies = () => {
       fetchMore={() => {}}
       onItemClick={handleOnItemClick}
       selectedItems={watchListMovieIds}
-      buildCardLink={(id) => `/${AssetType.Movies}/${id}`}
+      noOfItemsLoading={watchListMovieIds.length}
+      buildCardLink={(assetId) => `/${AssetType.Movies}/${assetId}`}
     />
   );
 };

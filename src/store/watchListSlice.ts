@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import {
@@ -6,7 +6,8 @@ import {
   ASSET_TYPE_TO_API_PATH,
   AssetType,
 } from "../utils/constants";
-import { RootState } from "./index";
+import { RootState, AppDispatch } from "./index";
+import { setLoading } from "./appLoaderSlice";
 
 type Asset = {
   id: string;
@@ -32,22 +33,29 @@ const initialState: WatchListState = {
   tvShows: [],
 };
 
-export const hydrateWatchListIds = createAsyncThunk(
-  "watchList/hydrateIds",
-  async (userEmailId: string) => {
+export const hydrateWatchListIds = (userEmailId: string) => {
+  return async (dispatch: AppDispatch) => {
     const userRef = doc(db, "users", userEmailId);
     const docSnap = await getDoc(userRef);
     const docData = docSnap.data();
     const movieIds: string[] = docData && docData.movies ? docData.movies : [];
     const tvShowIds: string[] =
       docData && docData.tvShows ? docData.tvShows : [];
-    return { movieIds, tvShowIds };
-  }
-);
+    dispatch(hydrateMovieIds(movieIds));
+    dispatch(hydrateTVShowIds(tvShowIds));
+    dispatch(setLoading(false));
+  };
+};
 
 export const updateWatchListMovieIds = createAsyncThunk(
   "watchList/updateMovieIds",
-  async (movieId: string, thunkAPI) => {
+  async (
+    {
+      movieId,
+      canUpdateWatchListMovies = false,
+    }: { movieId: string; canUpdateWatchListMovies?: boolean },
+    thunkAPI
+  ) => {
     const userEmailId = thunkAPI.getState().user.email;
     const userRef = doc(db, "users", userEmailId);
     const docSnap = await getDoc(userRef);
@@ -62,13 +70,23 @@ export const updateWatchListMovieIds = createAsyncThunk(
     await updateDoc(userRef, {
       movies: movieIds,
     });
+
+    if (canUpdateWatchListMovies)
+      thunkAPI.dispatch(updateWatchListMovies(movieId));
+
     return movieId;
   }
 );
 
 export const updateWatchListTVShowIds = createAsyncThunk(
   "watchList/updateTVShowIds",
-  async (tvShowId: string, thunkAPI) => {
+  async (
+    {
+      tvShowId,
+      canUpdateWatchListTVShows = false,
+    }: { tvShowId: string; canUpdateWatchListTVShows?: boolean },
+    thunkAPI
+  ) => {
     const userEmailId = thunkAPI.getState().user.email;
     const userRef = doc(db, "users", userEmailId);
     const docSnap = await getDoc(userRef);
@@ -83,6 +101,10 @@ export const updateWatchListTVShowIds = createAsyncThunk(
     await updateDoc(userRef, {
       tvShows: tvShowIds,
     });
+
+    if (canUpdateWatchListTVShows)
+      thunkAPI.dispatch(updateWatchListTVShows(tvShowId));
+
     return tvShowId;
   }
 );
@@ -96,10 +118,11 @@ const fetchAsset = async (type: AssetType, id: string): Promise<Asset> => {
   return { id: id, posterPath: data.poster_path, title: data.title };
 };
 
-export const fetchMovies = createAsyncThunk(
+export const fetchWatchListMovies = createAsyncThunk(
   "watchList/fetchMovies",
   async (args, thunkAPI) => {
     const movieIds = thunkAPI.getState().watchList.movieIds;
+    thunkAPI.dispatch(deleteWatchListMovies());
 
     const promises: Promise<Asset>[] = [];
     movieIds.forEach((movieId: string) => {
@@ -116,6 +139,7 @@ export const fetchTVShows = createAsyncThunk(
   "watchList/fetchTVShows",
   async (args, thunkAPI) => {
     const tvShowIds = thunkAPI.getState().watchList.tvShowIds;
+    thunkAPI.dispatch(deleteWatchListTVShows());
 
     const promises: Promise<Asset>[] = [];
     tvShowIds.forEach((tvShowId: string) => {
@@ -134,6 +158,30 @@ const watchListSlice = createSlice({
   reducers: {
     toggleActiveTab: (state) => {
       state.isMoviesTabActive = !state.isMoviesTabActive;
+    },
+    hydrateMovieIds: (state, action: PayloadAction<string[]>) => {
+      state.movieIds = action.payload;
+    },
+    hydrateTVShowIds: (state, action: PayloadAction<string[]>) => {
+      state.tvShowIds = action.payload;
+    },
+    deleteWatchListMovies: (state) => {
+      state.movies = [];
+    },
+    deleteWatchListTVShows: (state) => {
+      state.tvShows = [];
+    },
+    updateWatchListMovies: (state, action: PayloadAction<string>) => {
+      const indexOfMovieId = state.movies.findIndex(
+        (movie) => movie.id === action.payload
+      );
+      if (indexOfMovieId !== -1) state.movies.splice(indexOfMovieId, 1);
+    },
+    updateWatchListTVShows: (state, action: PayloadAction<string>) => {
+      const indexOfMovieId = state.tvShows.findIndex(
+        (tvShow) => tvShow.id === action.payload
+      );
+      state.tvShows.splice(indexOfMovieId, 1);
     },
     resetWatchList: (state) => {
       state.movieIds = [];
@@ -161,10 +209,10 @@ const watchListSlice = createSlice({
         state.tvShowIds.push(action.payload);
       }
     });
-    builder.addCase(fetchMovies.pending, (state) => {
+    builder.addCase(fetchWatchListMovies.pending, (state) => {
       state.isListLoading = true;
     });
-    builder.addCase(fetchMovies.fulfilled, (state, action) => {
+    builder.addCase(fetchWatchListMovies.fulfilled, (state, action) => {
       state.movies = action.payload;
       state.isListLoading = false;
     });
@@ -175,14 +223,19 @@ const watchListSlice = createSlice({
       state.tvShows = action.payload;
       state.isListLoading = false;
     });
-    builder.addCase(hydrateWatchListIds.fulfilled, (state, action) => {
-      state.movieIds = action.payload.movieIds;
-      state.tvShowIds = action.payload.tvShowIds;
-    });
   },
 });
 
-export const { resetWatchList, toggleActiveTab } = watchListSlice.actions;
+export const {
+  resetWatchList,
+  toggleActiveTab,
+  updateWatchListMovies,
+  updateWatchListTVShows,
+  deleteWatchListMovies,
+  deleteWatchListTVShows,
+  hydrateMovieIds,
+  hydrateTVShowIds,
+} = watchListSlice.actions;
 export const selectWatchListMovieIds = (state: RootState) =>
   state.watchList.movieIds;
 export const selectWatchListTVShowIds = (state: RootState) =>

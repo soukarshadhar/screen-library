@@ -5,16 +5,21 @@ import Movies from "./pages/Movies";
 import AssetDetails from "./pages/AssetDetails";
 import WatchList from "./pages/WatchList";
 import TVShows from "./pages/TVShows";
+import AppLoader from "./components/AppLoader";
 import UserForm from "./components/UserForm";
 import useAuth from "./hooks/useAuth";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "./store";
 import { AssetType } from "./utils/constants";
 import { getSearchParamPopularityDesc } from "./utils/utils";
+import { selectCanShowAppLoader } from "./store/appLoaderSlice";
 
 const Layout = () => {
+  const canShowAppLoader = useSelector(selectCanShowAppLoader);
   useAuth();
-  return (
+  return canShowAppLoader ? (
+    <AppLoader />
+  ) : (
     <>
       <Navbar />
       <Outlet />

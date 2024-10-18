@@ -35,12 +35,12 @@ const Movies = () => {
   );
 
   const handleOnItemClick = (ev: any) => {
-    if (ev.target.dataset.watchid && !loggedInUser) {
+    if (ev.target.dataset.id && !loggedInUser) {
       dispatch(toggleDialog());
     }
 
-    if (ev.target.dataset.watchid && !!loggedInUser) {
-      dispatch(updateWatchListMovieIds(ev.target.dataset.watchid));
+    if (ev.target.dataset.id && !!loggedInUser) {
+      dispatch(updateWatchListMovieIds({ movieId: ev.target.dataset.id }));
     }
   };
 

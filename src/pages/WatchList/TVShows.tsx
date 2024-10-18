@@ -21,11 +21,15 @@ const TVShows = () => {
     if (watchListTVShows.length !== watchListTVShowIds.length) {
       dispatch(fetchTVShows());
     }
-  }, [watchListTVShows, watchListTVShowIds]);
+  }, []);
 
   const handleOnItemClick = (ev: any) => {
-    if (ev.target.dataset.watchid) {
-      dispatch(updateWatchListTVShowIds(ev.target.dataset.watchid));
+    if (ev.target.dataset.id) {
+      const arg = {
+        tvShowId: ev.target.dataset.id,
+        canUpdateWatchListTVShows: true,
+      };
+      dispatch(updateWatchListTVShowIds(arg));
     }
   };
 
@@ -36,7 +40,8 @@ const TVShows = () => {
       fetchMore={() => {}}
       onItemClick={handleOnItemClick}
       selectedItems={watchListTVShowIds}
-      buildCardLink={(id) => `/${AssetType.TVShows}/${id}`}
+      noOfItemsLoading={watchListTVShowIds.length}
+      buildCardLink={(assetId) => `/${AssetType.TVShows}/${assetId}`}
     />
   );
 };

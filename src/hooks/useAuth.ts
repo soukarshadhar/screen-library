@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/userSlice";
 import { hydrateWatchListIds, resetWatchList } from "../store/watchListSlice";
+import { setLoading } from "../store/appLoaderSlice";
 import { AppDispatch } from "../store";
 import { auth } from "../utils/firebase";
 
@@ -27,6 +28,7 @@ const useAuth = () => {
       } else {
         dispatch(setUser(null));
         dispatch(resetWatchList());
+        dispatch(setLoading(false));
         if (location.pathname === "/watchlist")
           navigate("/", { replace: true });
       }

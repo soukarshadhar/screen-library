@@ -37,12 +37,12 @@ const TVShows = () => {
   );
 
   const handleOnItemClick = (ev: any) => {
-    if (ev.target.dataset.watchid && !loggedInUser) {
+    if (ev.target.dataset.id && !loggedInUser) {
       dispatch(toggleDialog());
     }
 
-    if (ev.target.dataset.watchid && !!loggedInUser) {
-      dispatch(updateWatchListTVShowIds(ev.target.dataset.watchid));
+    if (ev.target.dataset.id && !!loggedInUser) {
+      dispatch(updateWatchListTVShowIds({ tvShowId: ev.target.dataset.id }));
     }
   };
 

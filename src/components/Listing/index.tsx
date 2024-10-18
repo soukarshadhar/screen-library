@@ -7,6 +7,7 @@ type ListingProps = {
   list: any[];
   loading: boolean;
   selectedItems: string[];
+  noOfItemsLoading?: number;
   onItemClick: (event: React.MouseEvent<HTMLElement>) => void;
   fetchMore: () => void;
   buildCardLink: (id: string) => string;
@@ -19,6 +20,7 @@ const Listing = ({
   onItemClick,
   selectedItems = [],
   buildCardLink,
+  noOfItemsLoading = 20,
 }: ListingProps) => {
   const handleOnScroll = useCallback(() => {
     if (
@@ -38,7 +40,7 @@ const Listing = ({
 
   const renderShimmer = () => {
     const shimmers = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < noOfItemsLoading; i++) {
       shimmers.push(<ShimmerCard key={i} />);
     }
     return shimmers;
