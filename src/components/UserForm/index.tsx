@@ -18,13 +18,14 @@ import {
   toggleForm,
   resetForm,
 } from "../../store/formSlice";
+import { setUser } from "../../store/userSlice";
 import FormInput from "../FormInput";
 import FormButton from "../FormButton";
 import "../../styles/user-form.scss";
 
 const UserForm = () => {
   const dispatch = useDispatch();
-  const [formError, setFormError] = useState("");
+  const [formError, setFormError] = useState<string>("");
   const canShowDialog = useSelector(selectDialogIsOpen);
   const isSignUpForm = useSelector(selectDialogIsSignUpForm);
 
@@ -34,12 +35,12 @@ const UserForm = () => {
       password: string()
         .matches(
           /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#@$%&*]).{8,}$/g,
-          "Must contain atleast 1 uppercase, 1 lowercase, 1 number, 1 special character from # @ $ % & *, min 8 character"
+          "Must contain atleast 1 uppercase, 1 lowercase, 1 number, 1 special character from # @ $ % & *, min 8 characters"
         )
         .required("Required"),
     };
 
-    if (isSignUpForm) schema["userName"] = string().required();
+    if (isSignUpForm) schema["userName"] = string().required("Required");
 
     return object().shape(schema);
   };
@@ -57,6 +58,7 @@ const UserForm = () => {
   });
 
   const handleOnToggleForm = () => {
+    formik.resetForm();
     dispatch(toggleForm());
   };
 
@@ -66,7 +68,7 @@ const UserForm = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setFormError("Email ID already exist");
+        formik.setFieldError("email", "User with this email already exist");
         return;
       }
 
@@ -82,11 +84,20 @@ const UserForm = () => {
         uid: user.uid,
       });
 
+      const { displayName, email, uid } = user;
+
       formik.resetForm();
+      dispatch(
+        setUser({
+          displayName,
+          email,
+          uid,
+        })
+      );
       dispatch(resetForm());
       dispatch(toggleDialog());
     } catch (err) {
-      console.log(err);
+      setFormError((err as any).message);
     }
   };
 
@@ -102,7 +113,7 @@ const UserForm = () => {
       dispatch(resetForm());
       dispatch(toggleDialog());
     } catch (err) {
-      console.log(err);
+      setFormError((err as any).message);
     }
   };
 
@@ -127,42 +138,43 @@ const UserForm = () => {
               <FormInput
                 name="userName"
                 placeholder="Name"
-                className="mb-1"
                 value={formik.values.userName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.errors.userName && formik.touched.userName && (
-                <div className="mb-1">{formik.errors.userName}</div>
+                <div className="error-message">{formik.errors.userName}</div>
               )}
             </>
           )}
           <FormInput
             name="email"
             placeholder="Email"
-            className="mb-1"
+            className={isSignUpForm ? "row-gap" : ""}
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
           {formik.errors.email && formik.touched.email && (
-            <div className="mb-1">{formik.errors.email}</div>
+            <div className="error-message">{formik.errors.email}</div>
           )}
           <FormInput
             name="password"
             placeholder="Password"
-            className="mb-1"
+            className="row-gap"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
           {formik.errors.password && formik.touched.password && (
-            <div className="mb-1">{formik.errors.password}</div>
+            <div className="error-message">{formik.errors.password}</div>
           )}
           <FormButton
             type="submit"
+            className="row-gap"
             label={isSignUpForm ? SIGN_UP_LABEL : SIGN_IN_LABEL}
           />
+          {formError && <div className="error-message">{formError}</div>}
         </form>
         {!isSignUpForm && (
           <div

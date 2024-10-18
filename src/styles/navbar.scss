@@ -87,7 +87,7 @@
       .profile-dropdown {
         display: block;
         position: absolute;
-        width: 10rem;
+        min-width: 10rem;
         background-color: #212121;
         color: #fdfdfd;
         right: 2rem;
@@ -97,6 +97,12 @@
         box-shadow: 0px 0px 10px #212121;
 
         .username {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .user-email {
+          margin-top: 0.2rem;
           font-weight: bold;
           text-align: center;
         }

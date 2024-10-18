@@ -125,6 +125,7 @@ const Navbar = () => {
         {showProfileDropdown && (
           <div className="profile-dropdown">
             {user && <div className="username">{user.displayName}</div>}
+            {user && <div className="user-email">{user.email}</div>}
             {user && (
               <div className="sign-out" onClick={handleOnSignOutClick}>
                 Sign Out <FontAwesomeIcon icon={faRightFromBracket} />
