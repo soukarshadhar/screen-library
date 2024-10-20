@@ -10,7 +10,7 @@ export type ChipProps = {
 const Chip = ({ label, onClick }: ChipProps) => {
   return (
     <span className="chip">
-      <span className="label">{label}</span>
+      {label}
       <FontAwesomeIcon className="x-mark" icon={faXmark} onClick={onClick} />
     </span>
   );

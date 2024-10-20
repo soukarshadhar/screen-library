@@ -1,8 +1,7 @@
 import React from "react";
 import Dropdown, { DropdownOption } from "../Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
-import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import SquareCheckIcon from "../SquareCheckIcon";
+import SquareIcon from "../SquareIcon";
 
 type MultiSelectDropdownProps = {
   options: DropdownOption[];
@@ -21,10 +20,11 @@ const MultiSelectDropdown = ({
     const isSelected = value.includes(option.value);
     return (
       <>
-        <FontAwesomeIcon
-          className="checkbox"
-          icon={isSelected ? faSquareCheck : faSquare}
-        />
+        {isSelected ? (
+          <SquareCheckIcon className="checkbox" id={option.value} />
+        ) : (
+          <SquareIcon className="checkbox" id={option.value} />
+        )}
         {option.label}
       </>
     );

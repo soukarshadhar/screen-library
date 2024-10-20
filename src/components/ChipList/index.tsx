@@ -8,6 +8,8 @@ type ChipListProps = {
 };
 
 const ChipList = ({ chips, onDelete }: ChipListProps) => {
+  if (chips.length === 0) return null;
+
   return (
     <div className="chips">
       {chips.map((chip) => (

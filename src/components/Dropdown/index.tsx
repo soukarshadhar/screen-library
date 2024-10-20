@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useClickAwayListener from "../../hooks/useClickAwayListener";
 import "../../styles/dropdown.scss";
 
 export type DropdownOption = {
@@ -26,10 +27,11 @@ const Dropdown = ({
   onSelect,
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef(null);
+  const containerRef = useClickAwayListener(() => setIsOpen(false));
   const dropdownWidth = useRef(0);
 
-  const handleOnDropdownClick = () => {
+  const handleOnDropdownClick = (ev?: React.MouseEvent<HTMLDivElement>) => {
+    if (ev) ev.stopPropagation();
     setIsOpen(!isOpen);
   };
 
@@ -39,19 +41,17 @@ const Dropdown = ({
   }, [isOpen]);
 
   const handleOnRowClick = (ev: React.MouseEvent<HTMLUListElement>) => {
-    onSelect((ev.target as any).id);
+    ev.stopPropagation();
+    onSelect((ev.target as any).dataset.id);
     if (canCloseDropdown) handleOnDropdownClick();
   };
 
   const renderSelectedOption = () => {
-    if (value) {
-      const selectedOption = options.find(
-        (option) => option.value === value
-      ) as DropdownOption;
+    const selectedOption = options.find(
+      (option) => option.value === value
+    ) as DropdownOption;
 
-      return <b>{selectedOption.label}</b>;
-    }
-    return null;
+    return <b>{selectedOption.label}</b>;
   };
 
   return (
@@ -60,10 +60,8 @@ const Dropdown = ({
         className={`text${isOpen ? "" : " border-bottom"}`}
         onClick={handleOnDropdownClick}
       >
-        <span>
-          {`${label}${value ? " : " : ""}`}
-          {renderSelectedOption()}
-        </span>
+        {`${label}${value ? " :" : ""}`}
+        {value && renderSelectedOption()}
         <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
       </div>
       {isOpen && (
@@ -72,7 +70,7 @@ const Dropdown = ({
           onClick={handleOnRowClick}
         >
           {options.map((option) => (
-            <li key={option.value} id={option.value}>
+            <li key={option.value} data-id={option.value}>
               {renderRow ? renderRow(option) : option.label}
             </li>
           ))}

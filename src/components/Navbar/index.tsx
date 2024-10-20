@@ -10,6 +10,7 @@ import {
   faRightToBracket,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import useClickAwayListener from "../../hooks/useClickAwayListener";
 import { signOut } from "firebase/auth";
 import { toggleDialog } from "../../store/dialogSlice";
 import { selectUser } from "../../store/userSlice";
@@ -27,6 +28,7 @@ const Navbar = () => {
   const [navActive, setNavActive] = useState(false);
   const [showCollapsedMenu, setShowCollapsedMenu] = useState(false);
   const user = useSelector(selectUser);
+  const profileRef = useClickAwayListener(() => setShowProfileDropdown(false));
 
   useEffect(() => {
     window.addEventListener("scroll", handleOnScroll);
@@ -43,7 +45,8 @@ const Navbar = () => {
     }
   };
 
-  const handleOnProfileClick = () => {
+  const handleOnProfileClick = (ev: React.MouseEvent<HTMLSpanElement>) => {
+    ev.stopPropagation();
     setShowProfileDropdown(!showProfileDropdown);
   };
 
@@ -117,27 +120,29 @@ const Navbar = () => {
             </Link>
           )}
         </div>
-        <FontAwesomeIcon
+        <span
+          ref={profileRef}
+          className="profile"
           onClick={handleOnProfileClick}
-          className="profile-icon"
-          icon={faUserCircle}
-        />
-        {showProfileDropdown && (
-          <div className="profile-dropdown">
-            {user && <div className="username">{user.displayName}</div>}
-            {user && <div className="user-email">{user.email}</div>}
-            {user && (
-              <div className="sign-out" onClick={handleOnSignOutClick}>
-                Sign Out <FontAwesomeIcon icon={faRightFromBracket} />
-              </div>
-            )}
-            {!user && (
-              <div className="sign-in" onClick={handleOnSignInClick}>
-                Sign In <FontAwesomeIcon icon={faRightToBracket} />
-              </div>
-            )}
-          </div>
-        )}
+        >
+          <FontAwesomeIcon className="profile-icon" icon={faUserCircle} />
+          {showProfileDropdown && (
+            <div className="profile-dropdown">
+              {user && <div className="username">{user.displayName}</div>}
+              {user && <div className="user-email">{user.email}</div>}
+              {user && (
+                <div className="sign-out" onClick={handleOnSignOutClick}>
+                  Sign Out <FontAwesomeIcon icon={faRightFromBracket} />
+                </div>
+              )}
+              {!user && (
+                <div className="sign-in" onClick={handleOnSignInClick}>
+                  Sign In <FontAwesomeIcon icon={faRightToBracket} />
+                </div>
+              )}
+            </div>
+          )}
+        </span>
       </div>
       {showCollapsedMenu && (
         <>
