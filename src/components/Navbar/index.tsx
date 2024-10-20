@@ -82,7 +82,12 @@ const Navbar = () => {
       }`}
     >
       <div className="navbar-menu">
-        <img className="navbar-logo" src={Logo} alt="logo" />
+        <Link
+          className="navbar-logo"
+          to={`/${AssetType.Movies}?${getSearchParamPopularityDesc()}`}
+        >
+          <img src={Logo} alt="logo" />
+        </Link>
         <FontAwesomeIcon
           id="navOpen"
           className="navbar-hamburger"
