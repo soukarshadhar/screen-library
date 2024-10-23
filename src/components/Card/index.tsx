@@ -10,6 +10,7 @@ type CardProps = {
   id: string;
   title: string;
   isSelected: boolean;
+  rating: number;
   buildCardLink: (id: string) => string;
 };
 
@@ -18,6 +19,7 @@ const Card = ({
   id,
   title,
   isSelected,
+  rating,
   buildCardLink,
 }: CardProps) => {
   const [imgUrl, setImgUrl] = useState(ImageLoader);
@@ -67,6 +69,13 @@ const Card = ({
     );
   };
 
+  const getRatingColor = () => {
+    if (rating >= 9) return "excellent";
+    if (rating >= 7) return "good";
+    if (rating >= 4) return "average";
+    return "low";
+  };
+
   return (
     <div className="card">
       <span
@@ -88,6 +97,9 @@ const Card = ({
       {(!imagePath || imgLoadError) && (
         <div className="card-title">{title}</div>
       )}
+      <div className={`rating ${getRatingColor()}`}>
+        {rating === 10 || rating === 0 ? rating : rating.toFixed(1)}
+      </div>
     </div>
   );
 };

@@ -30,7 +30,15 @@ const useListing = (assetType: AssetType, params: string = "") => {
 
       const { total_pages, results } = await data.json();
       const currentList = results.map((i: any) => {
-        return { id: `${i.id}`, posterPath: i.poster_path, title: i.title };
+        return {
+          id: `${i.id}`,
+          posterPath: i.poster_path,
+          title: i.title,
+          averageVote:
+            i.vote_average !== undefined && i.vote_average !== null
+              ? i.vote_average
+              : 0,
+        };
       });
 
       dispatch(actions[assetType].setList(currentList));

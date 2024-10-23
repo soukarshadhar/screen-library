@@ -4,6 +4,9 @@
 
   .row1 {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+    column-gap: 1rem;
+    justify-content: end;
   }
 }

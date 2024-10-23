@@ -55,6 +55,7 @@ const Listing = ({
             imagePath={item.posterPath}
             id={item.id}
             title={item.title}
+            rating={item.averageVote}
             isSelected={selectedItems.includes(item.id)}
             buildCardLink={buildCardLink}
           />

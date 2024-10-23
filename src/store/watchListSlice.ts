@@ -13,6 +13,7 @@ type Asset = {
   id: string;
   posterPath: string;
   title: string;
+  averageVote: number;
 };
 
 type WatchListState = {
@@ -115,7 +116,15 @@ const fetchAsset = async (type: AssetType, id: string): Promise<Asset> => {
     GET_REQUEST_INIT
   );
   const data = await response.json();
-  return { id: id, posterPath: data.poster_path, title: data.title };
+  return {
+    id: id,
+    posterPath: data.poster_path,
+    title: data.title,
+    averageVote:
+      data.vote_average !== undefined && data.vote_average !== null
+        ? data.vote_average
+        : 0,
+  };
 };
 
 export const fetchWatchListMovies = createAsyncThunk(
