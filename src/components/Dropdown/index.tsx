@@ -30,8 +30,7 @@ const Dropdown = ({
   const containerRef = useClickAwayListener(() => setIsOpen(false));
   const dropdownWidth = useRef(0);
 
-  const handleOnDropdownClick = (ev?: React.MouseEvent<HTMLDivElement>) => {
-    if (ev) ev.stopPropagation();
+  const handleOnDropdownClick = () => {
     setIsOpen(!isOpen);
   };
 
@@ -41,7 +40,6 @@ const Dropdown = ({
   }, [isOpen]);
 
   const handleOnRowClick = (ev: React.MouseEvent<HTMLUListElement>) => {
-    ev.stopPropagation();
     onSelect((ev.target as any).dataset.id);
     if (canCloseDropdown) handleOnDropdownClick();
   };

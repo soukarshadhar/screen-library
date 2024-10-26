@@ -46,7 +46,6 @@ const Navbar = () => {
   };
 
   const handleOnProfileClick = (ev: React.MouseEvent<HTMLSpanElement>) => {
-    ev.stopPropagation();
     setShowProfileDropdown(!showProfileDropdown);
   };
 
