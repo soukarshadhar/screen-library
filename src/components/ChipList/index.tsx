@@ -3,7 +3,7 @@ import ChipComponent from "../Chip";
 import "../../styles/chiplist.scss";
 
 type ChipListProps = {
-  chips: { label: string; id: string }[];
+  chips: { label: string; value: string }[];
   onDelete: (chipId: string) => void;
 };
 
@@ -14,9 +14,9 @@ const ChipList = ({ chips, onDelete }: ChipListProps) => {
     <div className="chips">
       {chips.map((chip) => (
         <ChipComponent
-          key={chip.id}
+          key={chip.value}
           label={chip.label}
-          onClick={() => onDelete(chip.id)}
+          onClick={() => onDelete(chip.value)}
         />
       ))}
     </div>

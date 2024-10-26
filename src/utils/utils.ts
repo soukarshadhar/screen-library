@@ -17,20 +17,13 @@ export const resolveToArrayIndex = (
   return index;
 };
 
-export const getMotionPicturesWithGenre = (motionPictures: any[]) => {
-  return motionPictures.filter(
-    (motionPicture) =>
-      motionPicture.genre_ids && motionPicture.genre_ids.length > 0
-  );
-};
-
 export const getGenresBySelectedIds = (genreIds: string) => {
   const ids = genreIds.split(",");
-  const selectedGenres: { id: string; name: string }[] = [];
+  const selectedGenres: { value: string; label: string }[] = [];
   ids.forEach((id) => {
-    const genreById = GENRE_LIST.find((genre) => genre.id === parseInt(id));
+    const genreById = GENRE_LIST.find((genre) => genre.value === id);
     if (genreById) {
-      selectedGenres.push({ id: "" + genreById.id, name: genreById.name });
+      selectedGenres.push(genreById);
     }
   });
 
@@ -52,7 +45,7 @@ export const buildListingParams = (
   }
 
   const genres = getGenresBySelectedIds(genresValues);
-  genresValues = genres.map((genre) => genre.id).join("|");
+  genresValues = genres.map((genre) => genre.value).join("|");
 
   if (genresValues) {
     params.push(`with_genres=${genresValues}`);
